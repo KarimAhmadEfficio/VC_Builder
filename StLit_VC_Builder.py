@@ -256,10 +256,16 @@ APP_DIR = pathlib.Path(__file__).parent
 KNOW_DIR = APP_DIR / "knowledge"
 KNOW_DIR.mkdir(exist_ok=True)
 
-API_KEY = "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".strip()
+API_KEY = (st.secrets.get("OPENAI_API_KEY") if hasattr(st, "secrets") else None) \
+          or os.environ.get("OPENAI_API_KEY")
+
 if not API_KEY:
-    st.error("OPENAI_API_KEY not found. Add it in code for dev, or use .streamlit/secrets.toml / env var.")
+    st.error(
+        "OPENAI_API_KEY is missing. Locally, put it in `.streamlit/secrets.toml`. "
+        "On Streamlit Cloud, add it in Settings → Secrets."
+    )
     st.stop()
+
 client = OpenAI(api_key=API_KEY)
 
 CHAT_MODEL = "gpt-4o-mini"
@@ -850,3 +856,4 @@ st.markdown(
     "Outputs are AI-generated from available sources and may contain inaccuracies—please review and validate key figures.</div>",
     unsafe_allow_html=True
 )
+
