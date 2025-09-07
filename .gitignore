@@ -1,0 +1,6 @@
+# never commit secrets / local overrides
+.streamlit/secrets.toml
+local_settings.py
+__pycache__/
+*.pyc
+.DS_Store
